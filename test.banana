@@ -1,2 +1,2 @@
-set a (power 10 2)
+set a (power 10 (int (input "hello")))
 print (add 10 a)

@@ -1,6 +1,6 @@
 import sys
 
-from Banana_Def import alls, var
+from Banana_Def import DefList, VarDict
 from Banana_Error import Name_Error
 import re
 
@@ -8,11 +8,11 @@ import re
 def run(line):
     LineList = SafeFind(line, [' '])
     # print(LineList[0], list(all.keys()))
-    if LineList[0] in list(alls.keys()):
+    if LineList[0] in list(DefList.keys()):
         if LineList[0] == 'set':
-            out = lambda: alls[LineList[0]](arg(LineList[1:], IfSet=0))
+            out = lambda: DefList[LineList[0]](arg(LineList[1:], IfSet=0))
             return out
-        out = lambda: alls[LineList[0]](arg(LineList[1:]))
+        out = lambda: DefList[LineList[0]](arg(LineList[1:]))
         return out
     else:
         ra = Name_Error()
@@ -25,8 +25,8 @@ def arg(Arg: list, IfSet=None):
     for time, item in enumerate(Arg):
         if (item[0] == '"' or item[0] == "'") and (item[len(item) - 1] == '"' or item[len(item) - 1] == "'"):
             out.append(item[1:len(item) - 1])
-        elif re.match('^[+-]?(0|([1-9]\d*))(\.\d+)?', item) is not None:
-            if re.match('^[+-]?(0|([1-9]\d*))(\.\d+)?', item).span()[1] == len(item):
+        elif re.match(r'^[+-]?(0|([1-9]\d*))(\.\d+)?', item) is not None:
+            if re.match(r'^[+-]?(0|([1-9]\d*))(\.\d+)?', item).span()[1] == len(item):
                 if item.find(".") == -1:
                     out.append(int(item))
                 else:
@@ -35,8 +35,8 @@ def arg(Arg: list, IfSet=None):
             runs = item[1: len(item) - 1]
             out.append(run(runs)())
             # print(out)
-        elif item in list(var.keys()):
-            out.append(var[item])
+        elif item in list(VarDict.keys()):
+            out.append(VarDict[item])
         else:
             if IfSet is not None:
                 if IfSet == time:

@@ -1,7 +1,7 @@
 import sys
 from Banana_Error import Type_Error
 
-var = {}
+VarDict = {}
 
 
 def Banana_print(args: list):
@@ -58,9 +58,22 @@ def Banana_power(args: list):
 
 
 def Banana_set(args: list):
-    var[args[0]] = args[1]
+    VarDict[args[0]] = args[1]
     # print(var)
 
 
-alls = {'print': Banana_print, 'add': Banana_add, 'multiplication': Banana_multiplication, 'division': Banana_division,
-        'power': Banana_power, 'set': Banana_set}
+def Banana_input(args: list):
+    return input(args[0])
+
+
+def Banana_int(args: list):
+    return int(args[0])
+
+
+def Banana_str(args: list):
+    return str(args[0])
+
+
+DefList = {'print': Banana_print, 'add': Banana_add, 'multiplication': Banana_multiplication,
+           'division': Banana_division, 'int': Banana_int, 'str': Banana_str, 'input': Banana_input,
+           'power': Banana_power, 'set': Banana_set}
