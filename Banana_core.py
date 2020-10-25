@@ -1,18 +1,14 @@
-import sys
-
-from Banana_Def import DefList, VarDict
-from Banana_Error import Name_Error
 import re
+
+from Banana_def import DefDict, VarDict
+from Banana_error import Name_Error
 
 
 def run(line):
     LineList = SafeFind(line, [' '])
     # print(LineList[0], list(all.keys()))
-    if LineList[0] in list(DefList.keys()):
-        if LineList[0] == 'set':
-            out = lambda: DefList[LineList[0]](arg(LineList[1:], IfSet=0))
-            return out
-        out = lambda: DefList[LineList[0]](arg(LineList[1:]))
+    if LineList[0] in list(DefDict.keys()):
+        out = lambda: DefDict[LineList[0]].call(arg(LineList[1:], DefDict[LineList[0]].args))
         return out
     else:
         ra = Name_Error()
@@ -20,9 +16,11 @@ def run(line):
         ra.Raise_Error()
 
 
-def arg(Arg: list, IfSet=None):
+def arg(Arg: list, args: dict):
     out = []
     for time, item in enumerate(Arg):
+        TimeArgs = args.get(time) if args.get(time) is not None else (
+            args.get('all') if args.get('all') is not None else [])
         if (item[0] == '"' or item[0] == "'") and (item[len(item) - 1] == '"' or item[len(item) - 1] == "'"):
             out.append(item[1:len(item) - 1])
         elif re.match(r'^[+-]?(0|([1-9]\d*))(\.\d+)?', item) is not None:
@@ -33,14 +31,16 @@ def arg(Arg: list, IfSet=None):
                     out.append(float(item))
         elif item[0] == '(' and item[len(item) - 1] == ")":
             runs = item[1: len(item) - 1]
-            out.append(run(runs)())
+            if 'CallSelf' in TimeArgs:
+                out.append(run(runs))
+            else:
+                out.append(run(runs)())
             # print(out)
         elif item in list(VarDict.keys()):
             out.append(VarDict[item])
         else:
-            if IfSet is not None:
-                if IfSet == time:
-                    out.append(item)
+            if 'Set' in TimeArgs:
+                out.append(item)
     return out
 
 
@@ -75,14 +75,16 @@ def SafeFind(string: str, sep: list):
 class Banana:
     def __init__(self, code):
         self.CodeList = SafeFind(code, ['\n'])
-        self.RunList = []
+        self.CompileList = []
         self.TimeDict = {}
 
     def compile(self):
         for item in self.CodeList:
-            self.RunList.append(run(item))
+            if item[0] == '#':
+                continue
+            self.CompileList.append(run(item))
 
     def run(self):
         self.compile()
-        for item in self.RunList:
+        for item in self.CompileList:
             item()
