@@ -21,7 +21,14 @@ def arg(Arg: list, args: dict):
     for time, item in enumerate(Arg):
         TimeArgs = args.get(time) if args.get(time) is not None else (
             args.get('all') if args.get('all') is not None else [])
-        if (item[0] == '"' or item[0] == "'") and (item[len(item) - 1] == '"' or item[len(item) - 1] == "'"):
+        if "Run" in TimeArgs:
+            outIn = []
+            for i in SafeFind(item, [';']):
+                # print(i)
+                if i[0] == '(' and i[len(i) - 1] == ")":
+                    outIn.append(run(i[1: len(i) - 1]))
+            out.append(outIn)
+        elif (item[0] == '"' or item[0] == "'") and (item[len(item) - 1] == '"' or item[len(item) - 1] == "'"):
             out.append(item[1:len(item) - 1])
         elif re.match(r'^[+-]?(0|([1-9]\d*))(\.\d+)?', item) is not None:
             if re.match(r'^[+-]?(0|([1-9]\d*))(\.\d+)?', item).span()[1] == len(item):

@@ -102,6 +102,7 @@ class Banana_def(metaclass=abc.ABCMeta):
         self.Int = "Int"
         self.Str = "Str"
         self.Set = 'Set'
+        self.Run = "Run"
         DefDict[self.__class__.__name__[7:]] = self
 
     @abc.abstractmethod
@@ -266,14 +267,17 @@ Banana_input()
 class Banana_if(Banana_def):
     def __init__(self):
         super().__init__()
-        self.args = {0: [], 1: [self.DefSelf], 2: [self.DefSelf]}
+        self.args = {0: [], 1: [self.Run], 2: [self.Run]}
 
     def call(self, args):
         if args[0]:
-            args[1]()
+            for item in args[1]:
+                print(item)
+                item()
         else:
             if len(args) > 2:
-                args[2]()
+                for item in args[2]:
+                    item()
 
 
 Banana_if()

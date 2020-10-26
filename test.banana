@@ -1,3 +1,3 @@
 set a (input ":")
-if (equal a 1) (print (add 10 5)) (run (print "Hello") (print "123"))
+if (equal a 1) (print a);(print 10)
 # print 10
