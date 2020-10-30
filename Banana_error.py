@@ -21,3 +21,9 @@ class Name_Error(Banana_Error):
 
 class Type_Error(Banana_Error):
     Name = 'Type_Error'
+
+
+def Banana_raise(error, say):
+    out = error()
+    out.Say = say
+    out.Raise_Error()

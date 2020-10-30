@@ -1,7 +1,7 @@
 import re
 
 from Banana_def import DefDict, VarDict
-from Banana_error import Name_Error
+from Banana_error import Name_Error, Arg_Error, Banana_raise
 
 
 def run(line):
@@ -21,12 +21,10 @@ def arg(Arg: list, args: dict):
     for time, item in enumerate(Arg):
         TimeArgs = args.get(time) if args.get(time) is not None else (
             args.get('all') if args.get('all') is not None else [])
-        if "Run" in TimeArgs:
+        if "Run" in TimeArgs and item[0] == '{' and item[len(item) - 1] == '}':
             outIn = []
-            for i in SafeFind(item, [';']):
-                # print(i)
-                if i[0] == '(' and i[len(i) - 1] == ")":
-                    outIn.append(run(i[1: len(i) - 1]))
+            for i in SafeFind(item[1:len(item) - 1], [';']):
+                outIn.append(run(i))
             out.append(outIn)
         elif (item[0] == '"' or item[0] == "'") and (item[len(item) - 1] == '"' or item[len(item) - 1] == "'"):
             out.append(item[1:len(item) - 1])
@@ -45,9 +43,10 @@ def arg(Arg: list, args: dict):
             # print(out)
         elif item in list(VarDict.keys()):
             out.append(VarDict[item])
+        elif 'Set' in TimeArgs:
+            out.append(item)
         else:
-            if 'Set' in TimeArgs:
-                out.append(item)
+            Banana_raise(Arg_Error, f"No arg type(at '{item}).")
     return out
 
 
@@ -71,9 +70,9 @@ def SafeFind(string: str, sep: list):
                     Brackets = ""
                 else:
                     pass
-        elif i == '(':
+        elif i == '(' or i == '{':
             Bracket += 1
-        elif i == ')':
+        elif i == ')' or i == '}':
             Bracket -= 1
     Out.append(string[Last + 1 if Last != 0 else 0:])
     return Out
