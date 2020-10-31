@@ -1,11 +1,7 @@
 import re
 
 from Banana_def import DefDict, VarDict
-<<<<<<< HEAD
 from Banana_error import Name_Error, Arg_Error, Banana_raise
-=======
-from Banana_error import Name_Error
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
 
 
 def run(line):
@@ -25,25 +21,16 @@ def arg(Arg: list, args: dict):
     for time, item in enumerate(Arg):
         TimeArgs = args.get(time) if args.get(time) is not None else (
             args.get('all') if args.get('all') is not None else [])
-<<<<<<< HEAD
         if "Run" in TimeArgs and item[0] == '{' and item[len(item) - 1] == '}':
             outIn = []
             for i in SafeFind(item[1:len(item) - 1], [';']):
                 outIn.append(run(i))
-=======
-        if "Run" in TimeArgs:
-            outIn = []
-            for i in SafeFind(item, [';']):
-                # print(i)
-                if i[0] == '(' and i[len(i) - 1] == ")":
-                    outIn.append(run(i[1: len(i) - 1]))
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
             out.append(outIn)
         elif (item[0] == '"' or item[0] == "'") and (item[len(item) - 1] == '"' or item[len(item) - 1] == "'"):
             out.append(item[1:len(item) - 1])
         elif re.match(r'^[+-]?(0|([1-9]\d*))(\.\d+)?', item) is not None:
             if re.match(r'^[+-]?(0|([1-9]\d*))(\.\d+)?', item).span()[1] == len(item):
-                if item.find(".") == -1:
+                if int(item) == float(item):
                     out.append(int(item))
                 else:
                     out.append(float(item))
@@ -56,16 +43,10 @@ def arg(Arg: list, args: dict):
             # print(out)
         elif item in list(VarDict.keys()):
             out.append(VarDict[item])
-<<<<<<< HEAD
         elif 'Set' in TimeArgs:
             out.append(item)
         else:
             Banana_raise(Arg_Error, f"No arg type(at '{item}).")
-=======
-        else:
-            if 'Set' in TimeArgs:
-                out.append(item)
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
     return out
 
 
@@ -89,15 +70,9 @@ def SafeFind(string: str, sep: list):
                     Brackets = ""
                 else:
                     pass
-<<<<<<< HEAD
         elif i == '(' or i == '{':
             Bracket += 1
         elif i == ')' or i == '}':
-=======
-        elif i == '(':
-            Bracket += 1
-        elif i == ')':
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
             Bracket -= 1
     Out.append(string[Last + 1 if Last != 0 else 0:])
     return Out

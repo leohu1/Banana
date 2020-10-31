@@ -99,11 +99,6 @@ DefDict = {}
 class Banana_def(metaclass=abc.ABCMeta):
     def __init__(self):
         self.DefSelf = 'CallSelf'
-<<<<<<< HEAD
-=======
-        self.Int = "Int"
-        self.Str = "Str"
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
         self.Set = 'Set'
         self.Run = "Run"
         DefDict[self.__class__.__name__[7:]] = self
@@ -116,11 +111,7 @@ class Banana_def(metaclass=abc.ABCMeta):
 class Banana_set(Banana_def):
     def __init__(self):
         super().__init__()
-<<<<<<< HEAD
         self.args = {0: [self.Set], 1: []}
-=======
-        self.args = {0: [self.Set], 1: [self.Int, self.Str]}
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
 
     def call(self, args):
         VarDict[args[0]] = args[1]
@@ -132,11 +123,7 @@ Banana_set()
 class Banana_print(Banana_def):
     def __init__(self):
         super().__init__()
-<<<<<<< HEAD
         self.args = {'all': []}
-=======
-        self.args = {'all': [self.Int, self.Str]}
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
 
     def call(self, args):
         for item in args:
@@ -149,11 +136,7 @@ Banana_print()
 class Banana_add(Banana_def):
     def __init__(self):
         super().__init__()
-<<<<<<< HEAD
         self.args = {"all": []}
-=======
-        self.args = {"all": [self.Int, self.Str]}
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
 
     def call(self, args):
         out = args[0]
@@ -173,11 +156,7 @@ Banana_add()
 class Banana_subtraction(Banana_def):
     def __init__(self):
         super().__init__()
-<<<<<<< HEAD
         self.args = {0: [], 1: []}
-=======
-        self.args = {0: [self.Int], 1: [self.Int]}
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
 
     def call(self, args):
         out = args[0]
@@ -197,11 +176,7 @@ Banana_subtraction()
 class Banana_power(Banana_def):
     def __init__(self):
         super().__init__()
-<<<<<<< HEAD
         self.args = {"all": []}
-=======
-        self.args = {"all": [self.Int, self.Str]}
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
 
     def call(self, args):
         out = args[0]
@@ -221,11 +196,7 @@ Banana_power()
 class Banana_multiplication(Banana_def):
     def __init__(self):
         super().__init__()
-<<<<<<< HEAD
         self.args = {"all": []}
-=======
-        self.args = {"all": [self.Int, self.Str]}
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
 
     def call(self, args):
         out = args[0]
@@ -245,11 +216,7 @@ Banana_multiplication()
 class Banana_division(Banana_def):
     def __init__(self):
         super().__init__()
-<<<<<<< HEAD
         self.args = {"all": []}
-=======
-        self.args = {"all": [self.Int, self.Str]}
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
 
     def call(self, args):
         out = args[0]
@@ -266,36 +233,19 @@ class Banana_division(Banana_def):
 Banana_division()
 
 
-<<<<<<< HEAD
 class Banana_input(Banana_def):
     def __init__(self):
         super().__init__()
         self.args = {0: []}
-=======
-class Banana_run(Banana_def):
-    def __init__(self):
-        super().__init__()
-        self.args = {"all": [self.DefSelf]}
-
-    def call(self, args):
-        for item in args:
-            item()
-
-
-Banana_run()
-
-
-class Banana_input(Banana_def):
-    def __init__(self):
-        super().__init__()
-        self.args = {0: [self.Str, self.Int]}
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
 
     def call(self, args):
         out = input(args[0])
         if re.match(r'^[+-]?(0|([1-9]\d*))(\.\d+)?', out) is not None:
             if re.match(r'^[+-]?(0|([1-9]\d*))(\.\d+)?', out).span()[1] == len(out):
-                out = float(out)
+                if int(out) == float(out):
+                    out = int(out)
+                else:
+                    out = float(out)
         return out
 
 
@@ -310,10 +260,6 @@ class Banana_if(Banana_def):
     def call(self, args):
         if args[0]:
             for item in args[1]:
-<<<<<<< HEAD
-=======
-                print(item)
->>>>>>> 92abba40b4bea3e0211c7e06af088a9766c78e1d
                 item()
         else:
             if len(args) > 2:
